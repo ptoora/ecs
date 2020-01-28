@@ -1,8 +1,11 @@
 package tester;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -15,16 +18,23 @@ public class AppTest
     /**
      *
      */
-    public static void main(String[] args)
+    @Test
+    public void basicTest()
     {
         // get the rows
         ArrayList<ArrayList<Integer>> rows = getData();
 
-        // get index
+        // Expected results
+        ArrayList<Integer> expectedResult = new ArrayList<Integer>(Arrays.asList(4,3,5));
+        ArrayList<Integer> actualResult = new ArrayList<>();
+
+        // get index results
         for (ArrayList<Integer> row : rows) {
-            System.out.println("The index for the row is:" + getIndex(row));
+            actualResult.add(getIndex(row));
         }
 
+        // Compare
+        Assert.assertEquals(expectedResult, actualResult);
     }
 
      private static Integer getIndex(ArrayList<Integer> inputRow) {
@@ -37,7 +47,6 @@ public class AppTest
             Integer leftSum = left.stream().collect(Collectors.summingInt(Integer::intValue));
             List<Integer> right = inputRow.subList( index+1, inputRow.size());
             Integer rightSum = right.stream().collect(Collectors.summingInt(Integer::intValue));
-            System.out.println(leftSum + "=" + rightSum);
             if (leftSum.compareTo(rightSum)==0) {
                 return index;
             }
